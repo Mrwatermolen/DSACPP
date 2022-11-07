@@ -2,6 +2,8 @@
 #define MYSTACK_HPP
 #include "MyVector.hpp"
 
+/// @brief 栈 操作 Pop() Push() Top()
+/// @tparam T
 template <typename T>
 class MyStack : public MyVector<T> {
  private:

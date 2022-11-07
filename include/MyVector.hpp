@@ -4,15 +4,14 @@
 #include <random>
 #define Rank int
 #define DEFAULT_CAPACITY 3
-#define MyVectorDebug true
 
 using namespace std;
 
 template <typename T>
 class MyVector {
  private:
-  Rank _capacity;
-  Rank _size;
+  Rank _capacity;  // 向量的容量
+  Rank _size;      // 向量中的元素个数
   T* _elem;
 
  protected:
@@ -31,8 +30,9 @@ class MyVector {
 
  public:
   explicit MyVector(int c = DEFAULT_CAPACITY);
-  MyVector(int size, const T& e);
-  MyVector(const T* A, Rank lo, Rank hi);
+  MyVector(const MyVector<T>&);
+  MyVector(int size, const T&);
+  MyVector(const T*, Rank, Rank);
   ~MyVector();
 
   T& operator[](Rank r);
@@ -55,6 +55,11 @@ template <typename T>
 MyVector<T>::MyVector(int c) : _capacity(c), _size(0), _elem(new T[c]) {}
 
 template <typename T>
+MyVector<T>::MyVector(const MyVector<T>& v) {
+  copyFrom(v._elem, 0, v._size);
+}
+
+template <typename T>
 MyVector<T>::MyVector(const T* A, Rank lo, Rank hi) {
   copyFrom(A, lo, hi);
 }
@@ -75,6 +80,11 @@ MyVector<T>::~MyVector() {
   }
 }
 
+/// @brief 复制[lo, hi) 容器必须全新
+/// @tparam T
+/// @param A
+/// @param lo
+/// @param hi
 template <typename T>
 void MyVector<T>::copyFrom(const T* A, Rank lo, Rank hi) {
   _capacity = 2 * (hi - lo);
@@ -86,9 +96,7 @@ void MyVector<T>::copyFrom(const T* A, Rank lo, Rank hi) {
   }
 }
 
-//
-// 扩容操作 加倍扩容
-//
+/// @brief 扩容操作 加倍扩容
 template <typename T>
 void MyVector<T>::expand() {
   if (_size < _capacity) {
@@ -103,15 +111,16 @@ void MyVector<T>::expand() {
   delete[] oldElem;
 }
 
-//
-// 缩容操作
-//
+/// @brief 缩容操作 未实现
 template <typename T>
 void MyVector<T>::shrink() {}
 
-//
-// 二分查找 A版本
-//
+/// @brief 二分查找 A版本 查找范围[lo, hi)
+/// @tparam T
+/// @param e 待查找元素
+/// @param lo
+/// @param hi
+/// @return 元素所在的秩 若不存在返回-1
 template <typename T>
 Rank MyVector<T>::binSearchA(const T& e, Rank lo, Rank hi) {
   // 向左的代价更小 1次比较
@@ -128,10 +137,12 @@ Rank MyVector<T>::binSearchA(const T& e, Rank lo, Rank hi) {
   return -1;
 }
 
-//
-// 二分查找 B版本
-// ASL更加稳定
-//
+/// @brief 二分查找 B版本 ASL更加稳定 查找范围[lo, hi)
+/// @tparam T
+/// @param e 待查找元素
+/// @param lo
+/// @param hi
+/// @return 元素所在的秩 若不存在返回-1
 template <typename T>
 Rank MyVector<T>::binSearchB(const T& e, Rank lo, Rank hi) {
   while (1 < (hi - lo)) {
@@ -148,10 +159,12 @@ Rank MyVector<T>::binSearchB(const T& e, Rank lo, Rank hi) {
   return -1;
 }
 
-//
-// 二分查找 C版本
-// 满足Search的语义
-//
+/// @brief 二分查找 C版本 满足Search的语义 查找范围[lo, hi)
+/// @tparam T
+/// @param e 待查找元素
+/// @param lo
+/// @param hi
+/// @return 返回不大于e的最后一个元素的秩
 template <typename T>
 Rank MyVector<T>::binSearchC(const T& e, Rank lo, Rank hi) {
   while (lo < hi) {
@@ -165,14 +178,8 @@ Rank MyVector<T>::binSearchC(const T& e, Rank lo, Rank hi) {
   return lo - 1;
 }
 
-//
-// 起泡排序
-//
 template <typename T>
 void MyVector<T>::bubbleSort(Rank lo, Rank hi) {
-  if (MyVectorDebug) {
-    cout << "bubbleSort" << endl;
-  }
   auto bubble = [this](int lo, int hi) {
     Rank last = lo;
     while (++lo < hi) {
@@ -188,14 +195,8 @@ void MyVector<T>::bubbleSort(Rank lo, Rank hi) {
     ;
 }
 
-//
-// 选择排序
-//
 template <typename T>
 void MyVector<T>::selectSort(Rank lo, Rank hi) {
-  if (MyVectorDebug) {
-    cout << "selectSort" << endl;
-  }
   while (lo < hi) {
     auto minR = lo;
     for (Rank i = lo + 1; i < hi; i++) {
@@ -208,9 +209,6 @@ void MyVector<T>::selectSort(Rank lo, Rank hi) {
   }
 }
 
-//
-// 归并排序
-//
 template <typename T>
 void MyVector<T>::mergeSort(Rank lo, Rank hi) {
   if (hi - lo < 2) {
@@ -241,9 +239,6 @@ void MyVector<T>::mergeSort(Rank lo, Rank hi) {
   delete[] B;
 }
 
-//
-// 快速排序
-//
 template <typename T>
 void MyVector<T>::quickSort(Rank lo, Rank hi) {
   if (hi - lo < 2) {
@@ -271,13 +266,10 @@ void MyVector<T>::quickSort(Rank lo, Rank hi) {
 }
 
 //
-// 重载[]
+// 重载[] 不做越界检查
 //
 template <typename T>
 T& MyVector<T>::operator[](Rank r) {
-  /* if (0 < r || _size < r - 1) {
-    throw out_of_range("vector index out");
-  } */
   return _elem[r];
 }
 
@@ -302,14 +294,19 @@ Rank MyVector<T>::Size() {
   return _size;
 }
 
+/// @brief 判断向量是否为空
+/// @tparam T
+/// @return 为空返回true
 template <typename T>
 bool MyVector<T>::Empty() {
   return _size == 0;
 }
 
-//
-// 插入操作 返回插入元素的秩
-//
+/// @brief 插入操作
+/// @tparam T
+/// @param r 插入位置
+/// @param e 插入元素
+/// @return 返回插入元素的秩
 template <typename T>
 Rank MyVector<T>::Insert(Rank r, const T& e) {
   expand();
@@ -322,9 +319,11 @@ Rank MyVector<T>::Insert(Rank r, const T& e) {
   return r;
 }
 
-//
-// 区间删除 删除[lo, hi)的所有元素 返回被删除元素的规模
-//
+/// @brief 区间删除 删除[lo, hi)的所有元素
+/// @tparam T
+/// @param lo
+/// @param hi
+/// @return 返回被删除元素的规模
 template <typename T>
 int MyVector<T>::Remove(Rank lo, Rank hi) {
   if (lo == hi) {
@@ -339,9 +338,11 @@ int MyVector<T>::Remove(Rank lo, Rank hi) {
   return hi - lo;
 }
 
-//
-// 删除秩为r的元素 返回被删除的元素
-//
+/// @brief 删除秩为r的元素
+/// @tparam T
+/// @param lo
+/// @param hi
+/// @return 返回被删除的元素
 template <typename T>
 T MyVector<T>::RemoveAt(Rank r) {
   T e = _elem[r];
@@ -349,9 +350,12 @@ T MyVector<T>::RemoveAt(Rank r) {
   return e;
 }
 
-//
-// TODO
-//
+/// @brief 在[lo, hi)查找元素e
+/// @tparam T
+/// @param e
+/// @param lo
+/// @param hi
+/// @return 返回元素e的秩
 template <typename T>
 Rank MyVector<T>::Find(const T& e, Rank lo, Rank hi) {
   while ((lo < hi--) && (e != _elem[hi]))
@@ -359,6 +363,9 @@ Rank MyVector<T>::Find(const T& e, Rank lo, Rank hi) {
   return hi;
 }
 
+/// @brief 遍历
+/// @tparam T
+/// @param visit 遍历器
 template <typename T>
 template <typename VST>
 void MyVector<T>::Traverse(VST& visit) {
@@ -367,20 +374,22 @@ void MyVector<T>::Traverse(VST& visit) {
   }
 }
 
-//
-// 有序向量的搜索 返回不大于e的最后一个元素的秩
-// 在[lo, hi)搜索 返回[lo - 1, hi - 1]
-//
+/// @brief 有序向量的搜索 在[lo, hi)搜索
+/// @tparam T
+/// @param e
+/// @param lo
+/// @param hi
+/// @return 返回不大于e的最后一个元素的秩
 template <typename T>
 Rank MyVector<T>::Search(const T& e, Rank lo, Rank hi) {
-  // 0: binSearchC()
-  // 1: fibSearch()
+  // fibSearch()
   return binSearchC(e, lo, hi);
 }
 
-//
-// 将区间[li, hi)中的元素排序为有序递增的
-//
+/// @brief 将区间[li, hi)中的元素排序为有序递增的
+/// @tparam T
+/// @param lo
+/// @param hi
 template <typename T>
 void MyVector<T>::Sort(Rank lo, Rank hi) {
   // bubbleSort(lo, hi);

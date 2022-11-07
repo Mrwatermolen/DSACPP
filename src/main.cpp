@@ -1,21 +1,22 @@
 #include <iostream>
+#include <random>
 #include <string>
 
+#include "MyAVL.hpp"
+#include "MyBST.hpp"
 #include "MyBinTree.hpp"
 #include "MyBitmap.h"
 #include "MyGraph.hpp"
 #include "MyGraphMatrix.hpp"
 #include "MyList.hpp"
 #include "MyQueue.hpp"
+#include "MySplay.hpp"
 #include "MyStack.hpp"
 #include "MyVector.hpp"
 
 using namespace std;
 
 void testMyVector() {
-  if (!MyVectorDebug) {
-    return;
-  }
   cout << "My Vector Test" << endl;
   int a[] = {3, 0, 8, 2, 2, 4, 7, 5, 1}, l = 0, h = 9;
   MyVector<int> myV;
@@ -174,12 +175,85 @@ void testMyGraph() {
   mgm_2.BBC();
 }
 
+void testMyBST() {
+  cout << "My BST Test" << endl;
+  auto f = [](int x) { cout << x << ", "; };
+  MyBST<int> mbst(4);
+  for (int i = 0; i < 9; i++) {
+    mbst.Insert(i);
+  }
+
+  mbst.InOrderTraverse(mbst.Root(), f);
+  cout << endl;
+  mbst.PreOrderTraverse(mbst.Root(), f);
+  cout << endl;
+  srand(time(0));
+  for (int i = 0; i < 3; i++) {
+    int t = rand() % 9;
+    cout << "remove " << t << endl;
+    mbst.Remove(t);
+    mbst.InOrderTraverse(mbst.Root(), f);
+    cout << endl;
+  }
+  mbst.InOrderTraverse(mbst.Root(), f);
+  cout << endl;
+  mbst.PreOrderTraverse(mbst.Root(), f);
+  cout << endl;
+  cout << "My AVL Test" << endl;
+  MyAVL<int> mavl(4);
+  for (int i = 0; i < 9; i++) {
+    mavl.Insert(i);
+  }
+  mavl.InOrderTraverse(mavl.Root(), f);
+  cout << endl;
+  mavl.PreOrderTraverse(mavl.Root(), f);
+  for (int i = 0; i < 3; i++) {
+    int t = rand() % 9;
+    cout << "remove " << t << endl;
+    mavl.Remove(t);
+    mavl.InOrderTraverse(mbst.Root(), f);
+    cout << endl;
+  }
+  mavl.InOrderTraverse(mavl.Root(), f);
+  cout << endl;
+  mavl.PreOrderTraverse(mavl.Root(), f);
+  cout << endl;
+  cout << "My Splay Test" << endl;
+  MySlpay<int> ms(0);
+  for (int i = 1; i < 10; i++) {
+    ms.Insert(i);
+  }
+  ms.InOrderTraverse(ms.Root(), f);
+  cout << endl;
+  ms.PreOrderTraverse(ms.Root(), f);
+  cout << endl;
+  for (int i = 0; i < 3; i++) {
+    int t = rand() % 9;
+    ms.Search(t);
+    cout << "Search " << t << endl;
+    ms.InOrderTraverse(ms.Root(), f);
+    cout << endl;
+    ms.PreOrderTraverse(ms.Root(), f);
+    cout << endl;
+  }
+  for (int i = 0; i < 4; i++) {
+    int t = rand() % 10;
+    ms.Remove(t);
+    cout << "Remove " << t << endl;
+    ms.InOrderTraverse(ms.Root(), f);
+    cout << endl;
+    ms.PreOrderTraverse(ms.Root(), f);
+    cout << endl;
+  }
+}
+
 int main() {
-  testMyVector();
-  testMyBitmap();
-  testMyList();
-  testMyStack();
-  testMyQueue();
-  testMyBinTree();
-  testMyGraph();
+  // testMyVector();
+  // testMyBitmap();
+  // testMyList();
+  // testMyStack();
+  // testMyQueue();
+  // testMyBinTree();
+  // testMyGraph();
+  testMyBST();
 }

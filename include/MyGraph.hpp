@@ -5,17 +5,19 @@
 #include "MyBitmap.h"
 #include "MyQueue.hpp"
 
+// 点的状态
 typedef enum { UNDISCOVERED, DISCOVER, VISITED } VStatus;
+// 边的类型
 typedef enum { UNDETERMINED, TREE, CROSS, FORWARD, BACKWARD } EStatus;
 
 template <typename Tv>
 struct Vertex {
   Tv data;
-  int inDegree, outDegree;
-  VStatus status;
-  int dTime, fTime;  // 时间标签
-  int parent;        // 遍历中的父节点
-  int priority;      // 优先级
+  int inDegree, outDegree;  // 点的度
+  VStatus status;           // 点状态
+  int dTime, fTime;         // 时间标签
+  int parent;               // 遍历中的父节点
+  int priority;             // 优先级
   Vertex(const Tv& d)
       : data(d),
         inDegree(0),
@@ -48,8 +50,8 @@ struct Vertex {
 template <typename Te>
 struct Edge {
   Te data;
-  int weight;  // 权重
-  EStatus status;
+  int weight;      // 权重
+  EStatus status;  // 边的类型
   Edge() : weight(0), status(UNDETERMINED){};
   Edge(const Te& d, int w) : data(d), weight(w), status(UNDETERMINED) {}
   Edge<Te>& operator=(const Edge<Te> e) {
@@ -111,6 +113,7 @@ class MyGraph {
   void PFS(int s, PU prioUpdater);
 };
 
+/// @brief Prim最小生成树的优先级策略
 template <typename Tv, typename Te>
 struct PrimPu {
   virtual void operator()(MyGraph<Tv, Te>* g, int uk, int v) {
@@ -124,6 +127,7 @@ struct PrimPu {
   }
 };
 
+/// @brief Dijkstra最短路径的优先级策略
 template <typename Tv, typename Te>
 struct DjikPu {
   virtual void operator()(MyGraph<Tv, Te>* g, int uk, int v) {
@@ -137,9 +141,7 @@ struct DjikPu {
   }
 };
 
-//
-// 复位所有顶点和边的信息
-//
+/// @brief 复位所有顶点和边的信息
 template <typename Tv, typename Te>
 void MyGraph<Tv, Te>::reset() {
   for (int i = 0; i < n; i++) {
@@ -156,9 +158,9 @@ void MyGraph<Tv, Te>::reset() {
   }
 }
 
-//
-// BFS-VISIT
-//
+/// @brief BFS-VISIT
+/// @param i 顶点
+/// @param clock 时刻
 template <typename Tv, typename Te>
 void MyGraph<Tv, Te>::bfs(int i, int& clock) {
   MyQueue<int> Q;
@@ -184,9 +186,8 @@ void MyGraph<Tv, Te>::bfs(int i, int& clock) {
   }
 }
 
-//
-// 获得图的BFS序列
-//
+/// @brief 获得图的BFS序列
+/// @param start 以顶点start为起点
 template <typename Tv, typename Te>
 void MyGraph<Tv, Te>::BFS(int start) {
   reset();
@@ -203,9 +204,9 @@ void MyGraph<Tv, Te>::BFS(int start) {
   }
 }
 
-//
-// DFS-VISIT
-//
+/// @brief DFS-VISIT
+/// @param i 顶点
+/// @param clock 时刻
 template <typename Tv, typename Te>
 void MyGraph<Tv, Te>::dfs(int i, int& clock) {
   Status(i) = DISCOVER;
@@ -238,9 +239,8 @@ void MyGraph<Tv, Te>::dfs(int i, int& clock) {
   FTime(i) = ++clock;
 }
 
-//
-// 获得图的DFS序列
-//
+/// @brief 获得图的DFS序列
+/// @param start 以顶点start为起点
 template <typename Tv, typename Te>
 void MyGraph<Tv, Te>::DFS(int start) {
   reset();
@@ -256,9 +256,8 @@ void MyGraph<Tv, Te>::DFS(int start) {
   }
 }
 
-//
-// 获得DAG图的拓扑排序栈
-//
+/// @brief 获得DAG图的拓扑排序栈
+/// @return DAG图的拓扑排序栈 如果DAG图存在拓扑排序栈非空
 template <typename Tv, typename Te>
 MyStack<int> MyGraph<Tv, Te>::TopologicalSort() {
   MyStack<int> S;
@@ -383,9 +382,8 @@ void MyGraph<Tv, Te>::bbc(int v, int& clock, MyStack<int>& S, MyBitmap& B) {
   }
 }
 
-//
-// 给出无向图的 双连通分量
-//
+/// @brief 给出无向图的 双连通分量 TODO:Refoctor
+/// @return
 template <typename Tv, typename Te>
 MyBitmap MyGraph<Tv, Te>::BBC() {
   MyBitmap B(n);

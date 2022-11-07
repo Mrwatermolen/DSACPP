@@ -8,10 +8,10 @@ template <typename T>
 class MyBinTree {
  private:
  protected:
-  int _size;
-  BinNodePosi(T) _root;
-  virtual int updateHeight(BinNodePosi(T) x);
-  void updateHeightAbove(BinNodePosi(T) x);
+  int _size;             // 树的规模
+  BinNodePosi<T> _root;  // 树根
+  int updateHeight(BinNodePosi<T>);
+  void updateHeightAbove(BinNodePosi<T>);
 
  public:
   MyBinTree(const T& e);
@@ -19,20 +19,23 @@ class MyBinTree {
 
   int Size();
   bool Empty();
-  BinNodePosi(T) Root();
-  BinNodePosi(T) InsertAsLC(const T& e, BinNodePosi(T) x);
-  BinNodePosi(T) InsertAsRC(const T& e, BinNodePosi(T) x);
+  BinNodePosi<T> Root();
+  BinNodePosi<T> InsertAsLC(const T&, BinNodePosi<T>);
+  BinNodePosi<T> InsertAsRC(const T&, BinNodePosi<T>);
 
   template <typename VST>
-  void PreOrderTraverse(BinNodePosi(T) x, VST& visit);
+  void PreOrderTraverse(BinNodePosi<T>, VST&);
   template <typename VST>
-  void InOrderTraverse(BinNodePosi(T) x, VST& visit);
+  void InOrderTraverse(BinNodePosi<T>, VST&);
   template <typename VST>
-  void PostOrderTraverse(BinNodePosi(T) x, VST& visit);
+  void PostOrderTraverse(BinNodePosi<T>, VST&);
   template <typename VST>
-  void LevelOrderTraverse(BinNodePosi(T) x, VST& visit);
+  void LevelOrderTraverse(BinNodePosi<T>, VST&);
 };
 
+/// @brief 以e的值为根
+/// @tparam T
+/// @param e
 template <typename T>
 MyBinTree<T>::MyBinTree(const T& e) : _size(1) {
   _root = new MyBinNode<T>(e);
@@ -40,7 +43,7 @@ MyBinTree<T>::MyBinTree(const T& e) : _size(1) {
 
 template <typename T>
 MyBinTree<T>::~MyBinTree() {
-  auto clear = [](auto&& self, BinNodePosi(T) x) -> bool {
+  auto clear = [](auto&& self, BinNodePosi<T> x) -> bool {
     if (x) {
       self(self, x->lChild);
       self(self, x->rChild);
@@ -50,13 +53,15 @@ MyBinTree<T>::~MyBinTree() {
     return true;
   };
   clear(clear, _root);
+  _size = 0;
 }
 
-//
-// 更新x的高度 返回更新后的高度
-//
+/// @brief 更新树x的高度
+/// @tparam T
+/// @param x 树根
+/// @return 返回更新后树x的高度
 template <typename T>
-int MyBinTree<T>::updateHeight(BinNodePosi(T) x) {
+int MyBinTree<T>::updateHeight(BinNodePosi<T> x) {
   int c = -1;
   if (x->lChild) {
     c = max(c, x->lChild->height);
@@ -68,11 +73,11 @@ int MyBinTree<T>::updateHeight(BinNodePosi(T) x) {
   return x->height;
 }
 
-//
-// 更新x以及其祖先的高度
-//
+/// @brief 更新树x以及其祖先的高度
+/// @tparam T
+/// @param x 树的根x
 template <typename T>
-void MyBinTree<T>::updateHeightAbove(BinNodePosi(T) x) {
+void MyBinTree<T>::updateHeightAbove(BinNodePosi<T> x) {
   while (x) {
     int h = x->height;
     if (updateHeight(x) == h) {
@@ -82,53 +87,64 @@ void MyBinTree<T>::updateHeightAbove(BinNodePosi(T) x) {
   }
 }
 
+/// @brief
+/// @tparam T
+/// @return 树的规模
 template <typename T>
 int MyBinTree<T>::Size() {
   return _size;
 }
 
+/// @brief 树是否为空
+/// @tparam T
+/// @return
 template <typename T>
 bool MyBinTree<T>::Empty() {
   return !_root;
 }
 
+/// @brief
+/// @tparam T
+/// @return 返回树的根
 template <typename T>
-BinNodePosi(T) MyBinTree<T>::Root() {
+BinNodePosi<T> MyBinTree<T>::Root() {
   return _root;
 }
 
-//   BinNodePosi(T) InsertAsLC(BinNodePosi(T) x);
-// BinNodePosi(T) InsertAsRC(BinNodePosi(T) x);
-
-//
-// 作为x的左孩子插入
-//
+/// @brief 作为x的左孩子插入 要求x的左孩子为空 不做检查
+/// @tparam T
+/// @param e
+/// @param x 树的节点x
+/// @return x的左孩子
 template <typename T>
-BinNodePosi(T) MyBinTree<T>::InsertAsLC(const T& e, BinNodePosi(T) x) {
+BinNodePosi<T> MyBinTree<T>::InsertAsLC(const T& e, BinNodePosi<T> x) {
   _size++;
   x->InsertAsLC(e);
   updateHeightAbove(x);
   return x->lChild;
 }
 
-//
-// 作为x的右孩子插入
-//
+/// @brief 作为x的右孩子插入 要求x的右孩子为空 不做检查
+/// @tparam T
+/// @param e
+/// @param x 树的节点x
+/// @return x的右孩子
 template <typename T>
-BinNodePosi(T) MyBinTree<T>::InsertAsRC(const T& e, BinNodePosi(T) x) {
+BinNodePosi<T> MyBinTree<T>::InsertAsRC(const T& e, BinNodePosi<T> x) {
   _size++;
   x->InsertAsRC(e);
   updateHeightAbove(x);
   return x->rChild;
 }
 
-//
-// 前序遍历
-//
+/// @brief 以节点x为树根的前序遍历
+/// @tparam T
+/// @param x 树根x
+/// @param visit 遍历器
 template <typename T>
 template <typename VST>
-void MyBinTree<T>::PreOrderTraverse(BinNodePosi(T) x, VST& visit) {
-  MyStack<BinNodePosi(T)> S;
+void MyBinTree<T>::PreOrderTraverse(BinNodePosi<T> x, VST& visit) {
+  MyStack<BinNodePosi<T>> S;
   while (true) {
     while (x) {
       visit(x->data);
@@ -145,13 +161,14 @@ void MyBinTree<T>::PreOrderTraverse(BinNodePosi(T) x, VST& visit) {
   }
 }
 
-//
-// 中序遍历
-//
+/// @brief 以节点x为树根的中序遍历
+/// @tparam T
+/// @param x 树根x
+/// @param visit 遍历器
 template <typename T>
 template <typename VST>
-void MyBinTree<T>::InOrderTraverse(BinNodePosi(T) x, VST& visit) {
-  MyStack<BinNodePosi(T)> S;
+void MyBinTree<T>::InOrderTraverse(BinNodePosi<T> x, VST& visit) {
+  MyStack<BinNodePosi<T>> S;
   while (true) {
     while (x) {
       S.Push(x);
@@ -166,13 +183,14 @@ void MyBinTree<T>::InOrderTraverse(BinNodePosi(T) x, VST& visit) {
   }
 }
 
-//
-// 后序遍历
-//
+/// @brief 以节点x为树根的后序遍历
+/// @tparam T
+/// @param x 树根x
+/// @param visit 遍历器
 template <typename T>
 template <typename VST>
-void MyBinTree<T>::PostOrderTraverse(BinNodePosi(T) x, VST& visit) {
-  MyStack<BinNodePosi(T)> S;
+void MyBinTree<T>::PostOrderTraverse(BinNodePosi<T> x, VST& visit) {
+  MyStack<BinNodePosi<T>> S;
   bool isLeft = false;
   while (true) {
     while (x) {
@@ -191,7 +209,7 @@ void MyBinTree<T>::PostOrderTraverse(BinNodePosi(T) x, VST& visit) {
     }
 
     while (!S.Empty() && x == S.Top()->rChild) {
-      BinNodePosi(T) p = S.Pop();
+      BinNodePosi<T> p = S.Pop();
       visit(p->data);
       x = p;
     }
@@ -204,16 +222,17 @@ void MyBinTree<T>::PostOrderTraverse(BinNodePosi(T) x, VST& visit) {
   }
 }
 
-//
-// 层序遍历
-//
+/// @brief 以节点x为树根的层序遍历
+/// @tparam T
+/// @param x 树根x
+/// @param visit 遍历器
 template <typename T>
 template <typename VST>
-void MyBinTree<T>::LevelOrderTraverse(BinNodePosi(T) x, VST& visit) {
+void MyBinTree<T>::LevelOrderTraverse(BinNodePosi<T> x, VST& visit) {
   if (!x) {
     return;
   }
-  MyQueue<BinNodePosi(T)> Q;
+  MyQueue<BinNodePosi<T>> Q;
   Q.Enqueue(x);
   while (!Q.Empty()) {
     x = Q.Dequeue();
