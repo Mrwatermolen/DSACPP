@@ -1,35 +1,33 @@
 #ifndef MYBINNODE_HPP
 #define MYBINNODE_HPP
 
-#define stature(p) ((p) ? (p)->height : -1)  // 节点的高度 空树对应于-1
+#include <algorithm>
+#define stature(p) ((p) ? (p)->height : -1) // 节点的高度 空树对应于-1
 
-int max(int a, int b) {
-  if (a < b) {
-    return b;
-  } else {
-    return a;
-  }
-}
+// int max(int a, int b) {
+//   if (a < b) {
+//     return b;
+//   } else {
+//     return a;
+//   }
+// }
 
-template <typename T>
-struct MyBinNode;
-template <typename T>
-using BinNodePosi = MyBinNode<T>*;
+template <typename T> struct MyBinNode;
+template <typename T> using BinNodePosi = MyBinNode<T> *;
 
-template <typename T>
-struct MyBinNode {
+template <typename T> struct MyBinNode {
   T data;
-  BinNodePosi<T> lChild;  // 左孩子
-  BinNodePosi<T> rChild;  // 右孩子
-  BinNodePosi<T> parent;  // 父亲
-  int height;             // 高度
+  BinNodePosi<T> lChild; // 左孩子
+  BinNodePosi<T> rChild; // 右孩子
+  BinNodePosi<T> parent; // 父亲
+  int height;            // 高度
 
   int Size();
-  BinNodePosi<T> InsertAsLC(const T& e);
-  BinNodePosi<T> InsertAsRC(const T& e);
+  BinNodePosi<T> InsertAsLC(const T &e);
+  BinNodePosi<T> InsertAsRC(const T &e);
   BinNodePosi<T> Succ();
 
-  MyBinNode(const T& e, BinNodePosi<T> p = nullptr, BinNodePosi<T> l = nullptr,
+  MyBinNode(const T &e, BinNodePosi<T> p = nullptr, BinNodePosi<T> l = nullptr,
             BinNodePosi<T> r = nullptr, int h = 0)
       : data(e), parent(p), lChild(l), rChild(r), height(h){};
   MyBinNode() : parent(nullptr), lChild(nullptr), rChild(nullptr), height(0){};
@@ -42,8 +40,7 @@ struct MyBinNode {
 /// @tparam T
 /// @param e
 /// @return 以节点为根的子树的规模
-template <typename T>
-int MyBinNode<T>::Size() {
+template <typename T> int MyBinNode<T>::Size() {
   int s = 1;
   if (lChild) {
     s += lChild->Size();
@@ -58,8 +55,7 @@ int MyBinNode<T>::Size() {
 /// @tparam T
 /// @param e
 /// @return 节点的左孩子
-template <typename T>
-BinNodePosi<T> MyBinNode<T>::InsertAsLC(const T& e) {
+template <typename T> BinNodePosi<T> MyBinNode<T>::InsertAsLC(const T &e) {
   return (lChild = new MyBinNode(e, this));
 }
 
@@ -67,8 +63,7 @@ BinNodePosi<T> MyBinNode<T>::InsertAsLC(const T& e) {
 /// @tparam T
 /// @param e
 /// @return 节点的右孩子
-template <typename T>
-BinNodePosi<T> MyBinNode<T>::InsertAsRC(const T& e) {
+template <typename T> BinNodePosi<T> MyBinNode<T>::InsertAsRC(const T &e) {
   return (rChild = new MyBinNode(e, this));
 }
 
@@ -87,8 +82,7 @@ BinNodePosi<T> MyBinNode<T>::Succ() {
 
 /// @brief 逆时针旋转节点 更新所有节点的树高 自动连接上层
 /// @return 返回旋转完成后的根
-template <typename T>
-BinNodePosi<T> MyBinNode<T>::Zag() {
+template <typename T> BinNodePosi<T> MyBinNode<T>::Zag() {
   BinNodePosi<T> rc = rChild;
   rc->parent = this->parent;
   if (rc->parent) {
@@ -106,10 +100,10 @@ BinNodePosi<T> MyBinNode<T>::Zag() {
   rc->lChild = this;
 
   // 连接完成 更新高度 不应该在这里更新 留给上层更新
-  height = 1 + max(stature(lChild), stature(rChild));
-  rc->height = 1 + max(stature(rc->lChild), stature(rc->rChild));
+  height = 1 + std::max(stature(lChild), stature(rChild));
+  rc->height = 1 + std::max(stature(rc->lChild), stature(rc->rChild));
   for (BinNodePosi<T> x = rc->parent; x; x = parent) {
-    int h = 1 + max(stature(x->lChild), stature(x->rChild));
+    int h = 1 + std::max(stature(x->lChild), stature(x->rChild));
     if (x->height == h) {
       break;
     }
@@ -121,8 +115,7 @@ BinNodePosi<T> MyBinNode<T>::Zag() {
 
 /// @brief 顺时针 自动连接上层
 /// @return 返回旋转完成后的根
-template <typename T>
-BinNodePosi<T> MyBinNode<T>::Zig() {
+template <typename T> BinNodePosi<T> MyBinNode<T>::Zig() {
   BinNodePosi<T> lc = lChild;
   lc->parent = parent;
   if (lc->parent) {
@@ -140,10 +133,10 @@ BinNodePosi<T> MyBinNode<T>::Zig() {
   lc->rChild = this;
 
   // 连接完成 更新高度 不应该在这里更新 留给上层更新
-  height = 1 + max(stature(lChild), stature(rChild));
-  lc->height = 1 + max(stature(lc->lChild), stature(lc->rChild));
+  height = 1 + std::max(stature(lChild), stature(rChild));
+  lc->height = 1 + std::max(stature(lc->lChild), stature(lc->rChild));
   for (BinNodePosi<T> x = lc->parent; x; x = parent) {
-    int h = 1 + max(stature(x->lChild), stature(x->rChild));
+    int h = 1 + std::max(stature(x->lChild), stature(x->rChild));
     if (x->height == h) {
       break;
     }

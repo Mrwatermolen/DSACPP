@@ -3,33 +3,29 @@
 #include "MyBST.hpp"
 
 /// @brief 二叉搜索伸展树
-template <typename T>
-class MySlpay : public MyBST<T> {
- private:
- protected:
+template <typename T> class MySlpay : public MyBST<T> {
+private:
+protected:
   BinNodePosi<T> splay(BinNodePosi<T>);
 
- public:
-  MySlpay(const T& r);
+public:
+  MySlpay(const T &r);
   ~MySlpay();
 
-  BinNodePosi<T>& Search(const T&);
-  BinNodePosi<T> Insert(const T&);
-  bool Remove(const T&);
+  BinNodePosi<T> &Search(const T &);
+  BinNodePosi<T> Insert(const T &);
+  bool Remove(const T &);
 };
 
-template <typename T>
-MySlpay<T>::MySlpay(const T& r) : MyBST<T>(r) {}
+template <typename T> MySlpay<T>::MySlpay(const T &r) : MyBST<T>(r) {}
 
-template <typename T>
-MySlpay<T>::~MySlpay() {}
+template <typename T> MySlpay<T>::~MySlpay() {}
 
 /// @brief 伸展操作 将节点v伸展至树根
 /// @tparam T
 /// @param v 要伸展的节点
 /// @return 伸展至树根的节点
-template <typename T>
-BinNodePosi<T> MySlpay<T>::splay(BinNodePosi<T> v) {
+template <typename T> BinNodePosi<T> MySlpay<T>::splay(BinNodePosi<T> v) {
   BinNodePosi<T> p = nullptr, g = nullptr;
   while (true) {
     p = v->parent;
@@ -83,9 +79,8 @@ BinNodePosi<T> MySlpay<T>::splay(BinNodePosi<T> v) {
 /// @param e 要查询的关键码
 /// @return 成功返回指向关键码为e且真实存在的节点的引用 失败时
 /// 指向最后一次试图转向的空节点
-template <typename T>
-BinNodePosi<T>& MySlpay<T>::Search(const T& e) {
-  BinNodePosi<T>& x = this->searchIn(this->_root, e, this->_hot);
+template <typename T> BinNodePosi<T> &MySlpay<T>::Search(const T &e) {
+  BinNodePosi<T> &x = this->searchIn(this->_root, e, this->_hot);
   if (x) {
     this->_root = splay(x);
   } else {
@@ -98,8 +93,7 @@ BinNodePosi<T>& MySlpay<T>::Search(const T& e) {
 /// @tparam T
 /// @param e
 /// @return 树根
-template <typename T>
-BinNodePosi<T> MySlpay<T>::Insert(const T& e) {
+template <typename T> BinNodePosi<T> MySlpay<T>::Insert(const T &e) {
   if (!this->_root) {
     this->_root = new MyBinNode<T>(e);
     this->_size++;
@@ -112,7 +106,7 @@ BinNodePosi<T> MySlpay<T>::Insert(const T& e) {
   if (x->data < e) {
     T0 = x;
     T1 = x->rChild;
-    x->rChild = nullptr;  // 分裂完成
+    x->rChild = nullptr; // 分裂完成
     x = new MyBinNode<T>(e);
     x->lChild = T0;
     x->rChild = T1;
@@ -141,8 +135,7 @@ BinNodePosi<T> MySlpay<T>::Insert(const T& e) {
 /// @tparam T
 /// @param e
 /// @return 是否成功
-template <typename T>
-bool MySlpay<T>::Remove(const T& e) {
+template <typename T> bool MySlpay<T>::Remove(const T &e) {
   BinNodePosi<T> T0 = nullptr, T1 = nullptr, x = Search(e);
   if (this->_root->data != e) {
     return false;

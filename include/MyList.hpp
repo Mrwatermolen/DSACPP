@@ -44,7 +44,8 @@ MyList<T>::MyList() {
 template <typename T>
 MyList<T>::~MyList() {
   clear();
-  delete header, tailer;
+  delete header;
+  delete tailer;
   header = nullptr, tailer = nullptr;
 }
 

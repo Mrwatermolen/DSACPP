@@ -1,23 +1,20 @@
 #ifndef MYLISTNODE_HPP
 #define MYLISTNODE_HPP
 
-template <typename T>
-struct MyListNode;
-template <typename T>
-using Posi = MyListNode<T>*;
+template <typename T> struct MyListNode;
+template <typename T> using Posi = MyListNode<T> *;
 
-template <typename T>
-struct MyListNode {
+template <typename T> struct MyListNode {
   T data;
-  Posi<T> pred;  // 前驱
-  Posi<T> succ;  // 后继
+  Posi<T> pred; // 前驱
+  Posi<T> succ; // 后继
   MyListNode();
-  MyListNode(const T& e, Posi<T> p = nullptr, Posi<T> s = nullptr);
+  MyListNode(const T &e, Posi<T> p = nullptr, Posi<T> s = nullptr);
 
-  MyListNode<T>& operator=(const MyListNode<T>&);
+  MyListNode<T> &operator=(const MyListNode<T> &);
 
-  Posi<T> InsertAsPred(const T&);  // 前插
-  Posi<T> InsertAsSucc(const T&);  // 后插
+  Posi<T> InsertAsPred(const T &); // 前插
+  Posi<T> InsertAsSucc(const T &); // 后插
 };
 
 template <typename T>
@@ -29,11 +26,11 @@ MyListNode<T>::MyListNode() : pred(nullptr), succ(nullptr) {}
 /// @param p 前驱
 /// @param s 后继
 template <typename T>
-MyListNode<T>::MyListNode(const T& e, Posi<T> p, Posi<T> s)
+MyListNode<T>::MyListNode(const T &e, Posi<T> p, Posi<T> s)
     : data(e), pred(p), succ(s) {}
 
 template <typename T>
-MyListNode<T>& MyListNode<T>::operator=(const MyListNode<T>& n) {
+MyListNode<T> &MyListNode<T>::operator=(const MyListNode<T> &n) {
   if (this == &n) {
     return *this;
   }
@@ -52,8 +49,7 @@ MyListNode<T>& MyListNode<T>::operator=(const MyListNode<T>& n) {
 /// @tparam T
 /// @param e
 /// @return 元素e所在节点
-template <typename T>
-Posi<T> MyListNode<T>::InsertAsPred(const T& e) {
+template <typename T> Posi<T> MyListNode<T>::InsertAsPred(const T &e) {
   Posi<T> q = new MyListNode<T>(e, pred, this);
   pred->succ = q;
   pred = q;
@@ -64,8 +60,7 @@ Posi<T> MyListNode<T>::InsertAsPred(const T& e) {
 /// @tparam T
 /// @param e
 /// @return 元素e所在节点
-template <typename T>
-Posi<T> MyListNode<T>::InsertAsSucc(const T& e) {
+template <typename T> Posi<T> MyListNode<T>::InsertAsSucc(const T &e) {
   Posi<T> q = new MyListNode<T>(e, this, succ);
   succ->pred = q;
   succ = q;

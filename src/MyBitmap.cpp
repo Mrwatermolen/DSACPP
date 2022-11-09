@@ -14,7 +14,7 @@ MyBitmap::~MyBitmap() {
   }
 }
 
-MyBitmap& MyBitmap::operator=(const MyBitmap& b) {
+MyBitmap &MyBitmap::operator=(const MyBitmap &b) {
   if (this == &b) {
     return *this;
   }

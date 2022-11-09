@@ -1,5 +1,5 @@
-#ifndef MYALV_HPP
-#define MYALV_HPP
+#ifndef MYAVL_HPP
+#define MYAVL_HPP
 #include "MyBST.hpp"
 // 理想平衡状态
 #define Balanced(x) (stature((x)->lChild) == stature((x)->rChild))
@@ -9,13 +9,12 @@
 #define AvlBalanced(x) ((-2 < Balfac(x)) && (Balfac(x) < 2))
 
 /// @brief 平衡二叉搜索树
-template <typename T>
-class MyAVL : public MyBST<T> {
- private:
- protected:
+template <typename T> class MyAVL : public MyBST<T> {
+private:
+protected:
   int updateHeight(BinNodePosi<T>);
 
- public:
+public:
   MyAVL(const T &r) : MyBST<T>(r) {}
   ~MyAVL() {}
 
@@ -23,8 +22,7 @@ class MyAVL : public MyBST<T> {
   bool Remove(const T &);
 };
 
-template <typename T>
-int MyAVL<T>::updateHeight(BinNodePosi<T> x) {
+template <typename T> int MyAVL<T>::updateHeight(BinNodePosi<T> x) {
   int c = -1;
   if (x->lChild) {
     c = max(c, x->lChild->height);
@@ -37,11 +35,10 @@ int MyAVL<T>::updateHeight(BinNodePosi<T> x) {
 }
 
 /// @brief 将关键字插入AVL树中
-/// @tparam T 
-/// @param e 
+/// @tparam T
+/// @param e
 /// @return 插入的节点
-template <typename T>
-BinNodePosi<T> MyAVL<T>::Insert(const T &e) {
+template <typename T> BinNodePosi<T> MyAVL<T>::Insert(const T &e) {
   BinNodePosi<T> &x = this->Search(e);
   if (x) {
     // 防止雷同元素
@@ -49,7 +46,7 @@ BinNodePosi<T> MyAVL<T>::Insert(const T &e) {
   }
   x = new MyBinNode<T>(e, this->_hot);
   this->_size++;
-  BinNodePosi<T> p = x;  // 复制x的值
+  BinNodePosi<T> p = x; // 复制x的值
   // 检查平衡
   for (BinNodePosi<T> i = p->parent; i; i = i->parent) {
     if (!AvlBalanced(i)) {
@@ -89,11 +86,10 @@ BinNodePosi<T> MyAVL<T>::Insert(const T &e) {
 }
 
 /// @brief 删除关键码为e的节点
-/// @tparam T 
-/// @param e 
+/// @tparam T
+/// @param e
 /// @return 是否删除成功
-template <typename T>
-bool MyAVL<T>::Remove(const T &e) {
+template <typename T> bool MyAVL<T>::Remove(const T &e) {
   BinNodePosi<T> &x = this->Search(e);
   if (!x) {
     return false;

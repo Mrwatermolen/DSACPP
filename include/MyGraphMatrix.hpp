@@ -6,10 +6,10 @@
 /// @brief 图的邻接矩阵的实现
 template <typename Tv, typename Te>
 class MyGraphMatrix : public MyGraph<Tv, Te> {
- private:
+private:
   MyVector<Vertex<Tv>> V;           // 顶点集
-  MyVector<MyVector<Edge<Te>*>> E;  // 边集
- public:
+  MyVector<MyVector<Edge<Te> *>> E; // 边集
+public:
   MyGraphMatrix() { this->n = this->e = 0; };
   ~MyGraphMatrix() {
     for (int i = 0; i < this->n; i++) {
@@ -23,22 +23,22 @@ class MyGraphMatrix : public MyGraph<Tv, Te> {
   int FirstNbr(int i);
   int NextNbr(int i, int j);
 
-  Te& GetEdge(int i, int j);
-  EStatus& Status(int i, int j);
-  int& Weight(int i, int j);
-  void Insert(const Te& edge, int w, int i, int j);
+  Te &GetEdge(int i, int j);
+  EStatus &Status(int i, int j);
+  int &Weight(int i, int j);
+  void Insert(const Te &edge, int w, int i, int j);
   Te Remove(int i, int j);
 
-  Tv& GetVertex(int i);
-  VStatus& Status(int i);
-  int& InDegree(int i);
-  int& OutDegree(int i);
-  int& DTime(int i);
-  int& FTime(int i);
-  int& Parent(int i);
-  int& Priority(int i);
+  Tv &GetVertex(int i);
+  VStatus &Status(int i);
+  int &InDegree(int i);
+  int &OutDegree(int i);
+  int &DTime(int i);
+  int &FTime(int i);
+  int &Parent(int i);
+  int &Priority(int i);
 
-  int Insert(const Tv& vertex);
+  int Insert(const Tv &vertex);
   Tv Remove(int i);
 };
 
@@ -56,8 +56,7 @@ bool MyGraphMatrix<Tv, Te>::Exists(int i, int j) {
 /// @tparam Te
 /// @param i 顶点i 对有向图为起点
 /// @return 返回与顶点i邻接的第一个点 不存在返回-1
-template <typename Tv, typename Te>
-int MyGraphMatrix<Tv, Te>::FirstNbr(int i) {
+template <typename Tv, typename Te> int MyGraphMatrix<Tv, Te>::FirstNbr(int i) {
   return NextNbr(i, this->n);
 }
 
@@ -77,7 +76,7 @@ int MyGraphMatrix<Tv, Te>::NextNbr(int i, int j) {
 /// @param j 顶点j 对有向图为终点
 /// @return 返回边<i, j>的数据
 template <typename Tv, typename Te>
-Te& MyGraphMatrix<Tv, Te>::GetEdge(int i, int j) {
+Te &MyGraphMatrix<Tv, Te>::GetEdge(int i, int j) {
   return E[i][j]->data;
 }
 
@@ -86,7 +85,7 @@ Te& MyGraphMatrix<Tv, Te>::GetEdge(int i, int j) {
 /// @param j 顶点j 对有向图为终点
 /// @return 返回边<i, j>的状态
 template <typename Tv, typename Te>
-EStatus& MyGraphMatrix<Tv, Te>::Status(int i, int j) {
+EStatus &MyGraphMatrix<Tv, Te>::Status(int i, int j) {
   return E[i][j]->status;
 }
 
@@ -95,7 +94,7 @@ EStatus& MyGraphMatrix<Tv, Te>::Status(int i, int j) {
 /// @param j 顶点j 对有向图为终点
 /// @return 返回边<i, j>的权重
 template <typename Tv, typename Te>
-int& MyGraphMatrix<Tv, Te>::Weight(int i, int j) {
+int &MyGraphMatrix<Tv, Te>::Weight(int i, int j) {
   return E[i][j]->weight;
 }
 
@@ -105,7 +104,7 @@ int& MyGraphMatrix<Tv, Te>::Weight(int i, int j) {
 /// @param i 顶点i 对有向图为起点
 /// @param j 顶点j 对有向图为终点
 template <typename Tv, typename Te>
-void MyGraphMatrix<Tv, Te>::Insert(const Te& edge, int w, int i, int j) {
+void MyGraphMatrix<Tv, Te>::Insert(const Te &edge, int w, int i, int j) {
   if (Exists(i, j)) {
     return;
   }
@@ -134,7 +133,7 @@ Te MyGraphMatrix<Tv, Te>::Remove(int i, int j) {
 /// @param i 顶点i
 /// @return 返回顶点的数据
 template <typename Tv, typename Te>
-Tv& MyGraphMatrix<Tv, Te>::GetVertex(int i) {
+Tv &MyGraphMatrix<Tv, Te>::GetVertex(int i) {
   return V[i].data;
 }
 
@@ -142,7 +141,7 @@ Tv& MyGraphMatrix<Tv, Te>::GetVertex(int i) {
 /// @param i 顶点i
 /// @return 返回顶点的状态
 template <typename Tv, typename Te>
-VStatus& MyGraphMatrix<Tv, Te>::Status(int i) {
+VStatus &MyGraphMatrix<Tv, Te>::Status(int i) {
   return V[i].status;
 }
 
@@ -150,7 +149,7 @@ VStatus& MyGraphMatrix<Tv, Te>::Status(int i) {
 /// @param i 顶点i
 /// @return 返回顶点入度
 template <typename Tv, typename Te>
-int& MyGraphMatrix<Tv, Te>::InDegree(int i) {
+int &MyGraphMatrix<Tv, Te>::InDegree(int i) {
   return V[i].inDegree;
 }
 
@@ -158,31 +157,28 @@ int& MyGraphMatrix<Tv, Te>::InDegree(int i) {
 /// @param i 顶点i
 /// @return 返回顶点出度
 template <typename Tv, typename Te>
-int& MyGraphMatrix<Tv, Te>::OutDegree(int i) {
+int &MyGraphMatrix<Tv, Te>::OutDegree(int i) {
   return V[i].outDegree;
 }
 
 /// @brief 获得顶点遍历的发现时间 不做检查
 /// @param i 顶点i
 /// @return 返回顶点的发现时间
-template <typename Tv, typename Te>
-int& MyGraphMatrix<Tv, Te>::DTime(int i) {
+template <typename Tv, typename Te> int &MyGraphMatrix<Tv, Te>::DTime(int i) {
   return V[i].dTime;
 }
 
 /// @brief 获得顶点遍历的结束时间 不做检查
 /// @param i 顶点i
 /// @return 返回顶点的结束时间
-template <typename Tv, typename Te>
-int& MyGraphMatrix<Tv, Te>::FTime(int i) {
+template <typename Tv, typename Te> int &MyGraphMatrix<Tv, Te>::FTime(int i) {
   return V[i].fTime;
 }
 
 /// @brief 获得顶点遍历的父节点 不做检查
 /// @param i 顶点i
 /// @return 返回顶点的父节点
-template <typename Tv, typename Te>
-int& MyGraphMatrix<Tv, Te>::Parent(int i) {
+template <typename Tv, typename Te> int &MyGraphMatrix<Tv, Te>::Parent(int i) {
   return V[i].parent;
 }
 
@@ -190,7 +186,7 @@ int& MyGraphMatrix<Tv, Te>::Parent(int i) {
 /// @param i 顶点i
 /// @return 返回顶点的优先级
 template <typename Tv, typename Te>
-int& MyGraphMatrix<Tv, Te>::Priority(int i) {
+int &MyGraphMatrix<Tv, Te>::Priority(int i) {
   return V[i].priority;
 }
 
@@ -198,12 +194,12 @@ int& MyGraphMatrix<Tv, Te>::Priority(int i) {
 /// @param vertex
 /// @return 顶点编号
 template <typename Tv, typename Te>
-int MyGraphMatrix<Tv, Te>::Insert(const Tv& vertex) {
+int MyGraphMatrix<Tv, Te>::Insert(const Tv &vertex) {
   for (int i = 0; i < this->n; i++) {
     E[i].Insert(E[i].Size(), nullptr);
   }
   this->n++;
-  auto p = MyVector<Edge<Te>*>(this->n, nullptr);
+  auto p = MyVector<Edge<Te> *>(this->n, nullptr);
   E.Insert(E.Size(), p);
   return V.Insert(V.Size(), Vertex<Tv>(vertex));
 }
@@ -211,8 +207,7 @@ int MyGraphMatrix<Tv, Te>::Insert(const Tv& vertex) {
 /// @brief 删除顶点 不做检查
 /// @param i 删除顶点i
 /// @return 返回删除顶点的数据
-template <typename Tv, typename Te>
-Tv MyGraphMatrix<Tv, Te>::Remove(int i) {
+template <typename Tv, typename Te> Tv MyGraphMatrix<Tv, Te>::Remove(int i) {
   Tv vB = GetVertex(i);
   // 清空行信息
   for (int j = 0; j < this->n; j++) {
@@ -230,7 +225,7 @@ Tv MyGraphMatrix<Tv, Te>::Remove(int i) {
     E[j].RemoveAt(i);
     V[j].outDegree--;
   }
-  E.RemoveAt(i);  // 删除
+  E.RemoveAt(i); // 删除
   V.RemoveAt(i);
   this->n--;
   return vB;

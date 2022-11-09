@@ -6,11 +6,10 @@
 
 /// @brief 二叉搜索树
 /// @tparam T
-template <typename T>
-class MyBST : public MyBinTree<T> {
- private:
- protected:
-  BinNodePosi<T> _hot;  // 命中节点的父亲
+template <typename T> class MyBST : public MyBinTree<T> {
+private:
+protected:
+  BinNodePosi<T> _hot; // 命中节点的父亲
   BinNodePosi<T> connect34(BinNodePosi<T>, BinNodePosi<T>, BinNodePosi<T>,
                            BinNodePosi<T>, BinNodePosi<T>, BinNodePosi<T>,
                            BinNodePosi<T>);
@@ -20,7 +19,7 @@ class MyBST : public MyBinTree<T> {
                                   BinNodePosi<T> &);
   static BinNodePosi<T> removeAt(BinNodePosi<T> &, BinNodePosi<T> &);
 
- public:
+public:
   BinNodePosi<T> &Search(const T &);
   virtual BinNodePosi<T> Insert(const T &);
   virtual bool Remove(const T &);
@@ -79,11 +78,10 @@ BinNodePosi<T> MyBST<T>::connect34(BinNodePosi<T> a, BinNodePosi<T> b,
 /// @tparam T
 /// @param v 插入删除操作后首个被破坏平衡的节点
 /// @return 旋转完成后的树的根
-template <typename T>
-BinNodePosi<T> MyBST<T>::rotateAt(BinNodePosi<T> v) {
+template <typename T> BinNodePosi<T> MyBST<T>::rotateAt(BinNodePosi<T> v) {
   BinNodePosi<T> p = v->parent, g = p->parent;
 
-  if ((p == g->rChild)) {
+  if (p == g->rChild) {
     // zag
     if (v == p->rChild) {
       // zag
@@ -143,12 +141,12 @@ BinNodePosi<T> &MyBST<T>::searchIn(BinNodePosi<T> &x, const T &k,
 /// @return 返回被删除节点的接替者
 template <typename T>
 BinNodePosi<T> MyBST<T>::removeAt(BinNodePosi<T> &x, BinNodePosi<T> &hot) {
-  BinNodePosi<T> w = x;           // w总是被删除节点的备份
-  BinNodePosi<T> succ = nullptr;  // 删除节点的接替者
+  BinNodePosi<T> w = x;          // w总是被删除节点的备份
+  BinNodePosi<T> succ = nullptr; // 删除节点的接替者
   if (!x->lChild) {
     // 左孩子为空
-    x = x->rChild;  // 在树中删去x 使用右孩子代替其位置
-    succ = x;       // 记录接替者
+    x = x->rChild; // 在树中删去x 使用右孩子代替其位置
+    succ = x;      // 记录接替者
   } else if (!x->rChild) {
     // 右子树为空
     x = x->lChild;
@@ -187,17 +185,15 @@ BinNodePosi<T> MyBST<T>::removeAt(BinNodePosi<T> &x, BinNodePosi<T> &hot) {
 /// @param k 要查询的关键码
 /// @return 成功返回指向关键码为e且真实存在的节点的引用 失败时
 /// 指向最后一次试图转向的空节点
-template <typename T>
-BinNodePosi<T> &MyBST<T>::Search(const T &k) {
+template <typename T> BinNodePosi<T> &MyBST<T>::Search(const T &k) {
   return searchIn(this->_root, k, _hot = nullptr);
 }
 
 /// @brief 将关键字插入BST树中
 /// @param e 插入的关键字
 /// @return 插入的节点
-template <typename T>
-BinNodePosi<T> MyBST<T>::Insert(const T &e) {
-  BinNodePosi<T> &x = Search(e);  // 获得插入位置的引用
+template <typename T> BinNodePosi<T> MyBST<T>::Insert(const T &e) {
+  BinNodePosi<T> &x = Search(e); // 获得插入位置的引用
   if (x) {
     // 防止雷同元素
     return x;
@@ -212,8 +208,7 @@ BinNodePosi<T> MyBST<T>::Insert(const T &e) {
 /// @tparam T
 /// @param e
 /// @return 是否删除成功
-template <typename T>
-bool MyBST<T>::Remove(const T &e) {
+template <typename T> bool MyBST<T>::Remove(const T &e) {
   BinNodePosi<T> &x = Search(e);
   if (!x) {
     return false;
@@ -227,8 +222,7 @@ bool MyBST<T>::Remove(const T &e) {
 /// @brief
 /// @param x 树x
 /// @return 返回树x的最大关键字节点
-template <typename T>
-BinNodePosi<T> MyBST<T>::Maximum(BinNodePosi<T> x) {
+template <typename T> BinNodePosi<T> MyBST<T>::Maximum(BinNodePosi<T> x) {
   while (x->rChild) {
     x = x->rChild;
   }
@@ -238,8 +232,7 @@ BinNodePosi<T> MyBST<T>::Maximum(BinNodePosi<T> x) {
 /// @brief
 /// @param x 树x
 /// @return 返回树x的最小关键字节点
-template <typename T>
-BinNodePosi<T> MyBST<T>::Minimum(BinNodePosi<T> x) {
+template <typename T> BinNodePosi<T> MyBST<T>::Minimum(BinNodePosi<T> x) {
   while (x->lChild) {
     x = x->lChild;
   }

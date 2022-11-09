@@ -1,6 +1,6 @@
 cmake_minimum_required (VERSION 3.0.0) #规定cmake的最低版本要求
 project(DSA_CMAKE) #项目的名称，不一定和你的文件夹名称一样
-set(CMAKE_CXX_COMPILER "g++") #设置c++编译器
+set(CMAKE_CXX_COMPILER "clang++") #设置c++编译器
 
 include_directories(${PROJECT_SOURCE_DIR}/include) #添加头文件的搜索路径
 aux_source_directory(./src SrcFiles) #将源文件列表写在变量SrcFiles中

@@ -4,37 +4,29 @@
 
 /// @brief 栈 操作 Pop() Push() Top()
 /// @tparam T
-template <typename T>
-class MyStack : public MyVector<T> {
- private:
- public:
+template <typename T> class MyStack : public MyVector<T> {
+private:
+public:
   MyStack();
   ~MyStack();
 
-  void Push(const T& e);
+  void Push(const T &e);
   T Pop();
-  T& Top();
+  T &Top();
 };
 
-template <typename T>
-MyStack<T>::MyStack() {}
+template <typename T> MyStack<T>::MyStack() {}
 
-template <typename T>
-MyStack<T>::~MyStack() {}
+template <typename T> MyStack<T>::~MyStack() {}
 
-template <typename T>
-void MyStack<T>::Push(const T& e) {
+template <typename T> void MyStack<T>::Push(const T &e) {
   this->Insert(this->Size(), e);
 }
 
-template <typename T>
-T MyStack<T>::Pop() {
+template <typename T> T MyStack<T>::Pop() {
   return this->RemoveAt(this->Size() - 1);
 }
 
-template <typename T>
-T& MyStack<T>::Top() {
-  return (*this)[this->Size() - 1];
-}
+template <typename T> T &MyStack<T>::Top() { return (*this)[this->Size() - 1]; }
 
 #endif

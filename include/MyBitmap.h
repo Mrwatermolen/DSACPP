@@ -4,17 +4,17 @@
 #define MyBitmapDebug true
 
 class MyBitmap {
- private:
+private:
   int N;
   // M中的一个char可以存储8种不同的状态
   // 对一个key, 将其高位直至低位的第四位映射到M元素的索引
-  char* M;
+  char *M;
 
- public:
+public:
   MyBitmap(int n = 8);
   ~MyBitmap();
 
-  MyBitmap& operator=(const MyBitmap& b);
+  MyBitmap &operator=(const MyBitmap &b);
 
   void Set(int k);
   void Claer(int k);

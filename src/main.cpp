@@ -1,9 +1,11 @@
+#include <cstdlib>
 #include <iostream>
 #include <random>
 #include <string>
 
 #include "MyAVL.hpp"
 #include "MyBST.hpp"
+#include "MyBTree.hpp"
 #include "MyBinTree.hpp"
 #include "MyBitmap.h"
 #include "MyGraph.hpp"
@@ -30,6 +32,16 @@ void testMyVector() {
   myV.Traverse(f);
   cout << endl;
   cout << myV.Search(7, 0, 9) << endl;
+  myV.RemoveAt(3);
+  myV.RemoveAt(3);
+  myV.Traverse(f);
+  cout << endl;
+  cout << myV.Search(3, 0, myV.Size());
+  cout << endl;
+  cout << myV.Insert(myV.Search(3, 0, myV.Size()) + 1, 3);
+  cout << endl;
+  myV.Traverse(f);
+  cout << endl;
 }
 
 void testMyBitmap() {
@@ -247,6 +259,32 @@ void testMyBST() {
   }
 }
 
+void testMyBTree() {
+  cout << "My B Test" << endl;
+  auto f = [](int x) { cout << x << " "; };
+  MyBTree<int> mb(5, rand() % 100);
+  srand(time(0));
+  MyVector<int> a(20);
+  for (int i = 0; i < 20; i++) {
+    int t = rand() % 200;
+    cout << "Insert " << t << endl;
+    mb.Insert(t);
+    a.Insert(0, t);
+    mb.LevelOrderTraverse(mb.Root(), f);
+    mb.InOrderTraverse(mb.Root(), f);
+    cout << endl;
+  }
+  for (int i = 0; i < 5; i++) {
+    int t = rand() % a.Size();
+    cout << "Remove " << a[t] << endl;
+    mb.Remove(a[t]);
+    mb.LevelOrderTraverse(mb.Root(), f);
+    mb.InOrderTraverse(mb.Root(), f);
+    a.RemoveAt(t);
+    cout << endl;
+  }
+}
+
 int main() {
   // testMyVector();
   // testMyBitmap();
@@ -255,5 +293,6 @@ int main() {
   // testMyQueue();
   // testMyBinTree();
   // testMyGraph();
-  testMyBST();
+  // testMyBST();
+  testMyBTree();
 }
