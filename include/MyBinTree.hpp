@@ -9,10 +9,11 @@ private:
 protected:
   int _size;            // 树的规模
   BinNodePosi<T> _root; // 树根
-  int updateHeight(BinNodePosi<T>);
+  virtual int updateHeight(BinNodePosi<T>);
   void updateHeightAbove(BinNodePosi<T>);
 
 public:
+  MyBinTree() : _size(0), _root(nullptr){};
   MyBinTree(const T &e);
   ~MyBinTree();
 
@@ -54,14 +55,7 @@ template <typename T> MyBinTree<T>::~MyBinTree() {
 /// @param x 树根
 /// @return 返回更新后树x的高度
 template <typename T> int MyBinTree<T>::updateHeight(BinNodePosi<T> x) {
-  int c = -1;
-  if (x->lChild) {
-    c = max(c, x->lChild->height);
-  }
-  if (x->rChild) {
-    c = max(c, x->rChild->height);
-  }
-  x->height = c + 1;
+  x->height = 1 + std::max(stature(x->lChild), stature(x->rChild));
   return x->height;
 }
 

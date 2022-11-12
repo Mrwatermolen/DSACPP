@@ -15,6 +15,9 @@ public:
   BinNodePosi<T> &Search(const T &);
   BinNodePosi<T> Insert(const T &);
   bool Remove(const T &);
+
+  BinNodePosi<T> Maximum(BinNodePosi<T>);
+  BinNodePosi<T> Minimum(BinNodePosi<T>);
 };
 
 template <typename T> MySlpay<T>::MySlpay(const T &r) : MyBST<T>(r) {}
@@ -70,6 +73,8 @@ template <typename T> BinNodePosi<T> MySlpay<T>::splay(BinNodePosi<T> v) {
     } else {
       p->Zag();
     }
+    this->updateHeight(p);
+    this->updateHeight(v);
   }
   // this->_root = v;
   return v;

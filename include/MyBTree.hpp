@@ -31,8 +31,8 @@ public:
   template <typename VST> void InOrderTraverse(BNodePosi<T>, VST &);
 };
 
-/// @brief 检查是否发生下溢并处理
-/// @param x 可能下 溢的节点
+/// @brief 检查是否发生上溢并处理
+/// @param x 可能上溢的节点
 template <typename T> void MyBTree<T>::solveOverflow(BNodePosi<T> x) {
   while (x && (_order < x->child.Size())) {
     int mid = x->key.Size() / 2;
@@ -71,13 +71,13 @@ template <typename T> void MyBTree<T>::solveUnderflow(BNodePosi<T> x) {
     BNodePosi<T> p = x->parent, lc = nullptr, rc = nullptr;
     // Rank r = p->child.Search(x, 0, p->child.Size());
     Rank r = p->child.Find(x, 0, p->child.Size());
-    // Rank r = p->
     // 向兄弟节点借一个元素
     if (0 < r) {
       // 尝试向左兄弟借
       lc = p->child[r - 1];
       if (((_order + 1) / 2) < lc->child.Size()) {
         // 可借
+        // 对应右旋操作 zag
         x->key.Insert(0, p->key[r - 1]);
         p->key[r - 1] = lc->key[lc->key.Size() - 1];
         lc->key.RemoveAt(lc->key.Size() - 1);
@@ -89,6 +89,7 @@ template <typename T> void MyBTree<T>::solveUnderflow(BNodePosi<T> x) {
     }
     if (r < p->child.Size() - 1) {
       // 尝试向右兄弟借
+      // 对应左旋操作 zig
       rc = p->child[r + 1];
       if (((_order + 1) / 2) < rc->child.Size()) {
         // 可借

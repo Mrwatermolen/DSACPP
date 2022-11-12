@@ -26,10 +26,11 @@ public:
 
   BinNodePosi<T> Maximum(BinNodePosi<T>);
   BinNodePosi<T> Minimum(BinNodePosi<T>);
+  MyBST() : _hot(nullptr){};
   MyBST(const T &r) : MyBinTree<T>(r) { _hot = nullptr; };
 };
 
-/// @brief zag以及zig操作都可以统一归入到3+4重构中去
+/// @brief zag以及zig操作都可以统一归入到3+4重构中去 有些还是做不到的
 /// @tparam T
 /// @param a 中序遍历下最先被访问的节点
 /// @param b 中序遍历下中间被访问的节点
@@ -176,7 +177,8 @@ BinNodePosi<T> MyBST<T>::removeAt(BinNodePosi<T> &x, BinNodePosi<T> &hot) {
   if (succ) {
     succ->parent = hot;
   }
-  // release(w);
+  // release(w); TODO: release
+  delete w;
   // release(w->data);
   return succ;
 }

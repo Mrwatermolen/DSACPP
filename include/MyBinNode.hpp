@@ -1,19 +1,24 @@
 #ifndef MYBINNODE_HPP
 #define MYBINNODE_HPP
-
 #include <algorithm>
-#define stature(p) ((p) ? (p)->height : -1) // 节点的高度 空树对应于-1
-
-// int max(int a, int b) {
-//   if (a < b) {
-//     return b;
-//   } else {
-//     return a;
-//   }
-// }
+#include <iostream>
 
 template <typename T> struct MyBinNode;
 template <typename T> using BinNodePosi = MyBinNode<T> *;
+typedef enum { BLACK, RED } BinNColor;
+
+/// @return 返回节点的高度
+template <typename T> inline int stature(BinNodePosi<T> p) {
+  return (p ? p->height : -1);
+}
+
+/// @brief 是否为黑节点 规定空节点也为黑节点
+template <typename T> inline bool isBlack(BinNodePosi<T> p) {
+  if (!p) {
+    return true;
+  }
+  return p->color == BLACK;
+}
 
 template <typename T> struct MyBinNode {
   T data;
@@ -21,6 +26,7 @@ template <typename T> struct MyBinNode {
   BinNodePosi<T> rChild; // 右孩子
   BinNodePosi<T> parent; // 父亲
   int height;            // 高度
+  BinNColor color;       // 颜色
 
   int Size();
   BinNodePosi<T> InsertAsLC(const T &e);
@@ -28,9 +34,11 @@ template <typename T> struct MyBinNode {
   BinNodePosi<T> Succ();
 
   MyBinNode(const T &e, BinNodePosi<T> p = nullptr, BinNodePosi<T> l = nullptr,
-            BinNodePosi<T> r = nullptr, int h = 0)
-      : data(e), parent(p), lChild(l), rChild(r), height(h){};
-  MyBinNode() : parent(nullptr), lChild(nullptr), rChild(nullptr), height(0){};
+            BinNodePosi<T> r = nullptr, int h = 0, BinNColor c = BLACK)
+      : data(e), parent(p), lChild(l), rChild(r), height(h), color(c){};
+  MyBinNode()
+      : parent(nullptr), lChild(nullptr), rChild(nullptr), height(0),
+        color(BLACK){};
 
   BinNodePosi<T> Zig();
   BinNodePosi<T> Zag();
@@ -99,16 +107,16 @@ template <typename T> BinNodePosi<T> MyBinNode<T>::Zag() {
   this->parent = rc;
   rc->lChild = this;
 
-  // 连接完成 更新高度 不应该在这里更新 留给上层更新
-  height = 1 + std::max(stature(lChild), stature(rChild));
-  rc->height = 1 + std::max(stature(rc->lChild), stature(rc->rChild));
-  for (BinNodePosi<T> x = rc->parent; x; x = parent) {
-    int h = 1 + std::max(stature(x->lChild), stature(x->rChild));
-    if (x->height == h) {
-      break;
-    }
-    x->height = h;
-  }
+  // 连接完成 更新高度
+  // height = 1 + std::max(stature(lChild), stature(rChild));
+  // rc->height = 1 + std::max(stature(rc->lChild), stature(rc->rChild));
+  // for (BinNodePosi<T> x = rc->parent; x; x = parent) {
+  //   int h = 1 + std::max(stature(x->lChild), stature(x->rChild));
+  //   if (x->height == h) {
+  //     break;
+  //   }
+  //   x->height = h;
+  // }
 
   return rc;
 }
@@ -132,16 +140,16 @@ template <typename T> BinNodePosi<T> MyBinNode<T>::Zig() {
   this->parent = lc;
   lc->rChild = this;
 
-  // 连接完成 更新高度 不应该在这里更新 留给上层更新
-  height = 1 + std::max(stature(lChild), stature(rChild));
-  lc->height = 1 + std::max(stature(lc->lChild), stature(lc->rChild));
-  for (BinNodePosi<T> x = lc->parent; x; x = parent) {
-    int h = 1 + std::max(stature(x->lChild), stature(x->rChild));
-    if (x->height == h) {
-      break;
-    }
-    x->height = h;
-  }
+  // 连接完成 更新高度
+  // height = 1 + std::max(stature(lChild), stature(rChild));
+  // lc->height = 1 + std::max(stature(lc->lChild), stature(lc->rChild));
+  // for (BinNodePosi<T> x = lc->parent; x; x = parent) {
+  //   int h = 1 + std::max(stature(x->lChild), stature(x->rChild));
+  //   if (x->height == h) {
+  //     break;
+  //   }
+  //   x->height = h;
+  // }
 
   return lc;
 }
