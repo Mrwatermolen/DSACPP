@@ -16,6 +16,7 @@
 #include "MySplay.hpp"
 #include "MyStack.hpp"
 #include "test.h"
+#include "testMyPQ.h"
 #include "testMyRedBlack.h"
 
 using namespace std;
@@ -271,5 +272,6 @@ int main() {
   // testMyGraph();
   // testMyBST();
   // testMyBTree();
-  testMyRedBlack();
+  // testMyRedBlack();
+  testMyPQ();
 }

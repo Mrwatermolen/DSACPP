@@ -1,5 +1,6 @@
 #ifndef TEST_H
 #define TEST_H
-#include "testMyVector.h"
+#include "testMyPQ.h"
 #include "testMyRedBlack.h"
+#include "testMyVector.h"
 #endif

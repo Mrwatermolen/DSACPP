@@ -8,12 +8,10 @@
 using namespace std;
 
 template <typename T> class MyVector {
-private:
+protected:
   Rank _capacity; // 向量的容量
   Rank _size;     // 向量中的元素个数
   T *_elem;
-
-protected:
   void copyFrom(const T *A, Rank lo, Rank hi);
   void expand();
   void shrink();

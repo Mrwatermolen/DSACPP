@@ -105,7 +105,7 @@ void MyRedBlack<T>::doubleBlack(BinNodePosi<T> p, BinNodePosi<T> v) {
   while (p) {
     BinNodePosi<T> s =
         (p->lChild != v) ? (p->lChild) : (p->rChild); // v的兄弟节点
-    if (s && isBlack(s)) {
+    if (isBlack(s)) {
       // BB-1
       // 兄弟s为黑且s拥有一个红孩子
       // 相当于 B树的下溢 但可向兄弟节点借一个节点

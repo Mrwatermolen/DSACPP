@@ -27,6 +27,7 @@ template <typename T> struct MyBinNode {
   BinNodePosi<T> parent; // 父亲
   int height;            // 高度
   BinNColor color;       // 颜色
+  int nlp;
 
   int Size();
   BinNodePosi<T> InsertAsLC(const T &e);
@@ -34,11 +35,12 @@ template <typename T> struct MyBinNode {
   BinNodePosi<T> Succ();
 
   MyBinNode(const T &e, BinNodePosi<T> p = nullptr, BinNodePosi<T> l = nullptr,
-            BinNodePosi<T> r = nullptr, int h = 0, BinNColor c = BLACK)
-      : data(e), parent(p), lChild(l), rChild(r), height(h), color(c){};
+            BinNodePosi<T> r = nullptr, int h = 0, BinNColor c = BLACK,
+            int n = 1)
+      : data(e), parent(p), lChild(l), rChild(r), height(h), color(c), nlp(n){};
   MyBinNode()
       : parent(nullptr), lChild(nullptr), rChild(nullptr), height(0),
-        color(BLACK){};
+        color(BLACK), nlp(0){};
 
   BinNodePosi<T> Zig();
   BinNodePosi<T> Zag();
