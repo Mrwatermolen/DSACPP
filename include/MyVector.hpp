@@ -240,7 +240,7 @@ template <typename T> void MyVector<T>::quickSort(Rank lo, Rank hi) {
   Rank mi = [this](Rank lo, Rank hi) -> Rank {
     Rank provt = this->_elem[lo];
     while (lo < hi - 1) {
-      while (lo < hi - 1 && provt < this->_elem[hi - 1]) {
+      while (lo < hi - 1 && provt <= this->_elem[hi - 1]) {
         hi--;
       }
       this->_elem[lo] = this->_elem[hi - 1];

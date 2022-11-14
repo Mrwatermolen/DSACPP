@@ -263,7 +263,7 @@ void testMyBTree() {
 }
 
 int main() {
-  // testMyVector();
+  testMyVector();
   // testMyBitmap();
   // testMyList();
   // testMyStack();
