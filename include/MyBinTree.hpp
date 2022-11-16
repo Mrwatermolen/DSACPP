@@ -17,9 +17,9 @@ public:
   MyBinTree(const T &e);
   ~MyBinTree();
 
-  int Size();
-  bool Empty();
-  BinNodePosi<T> Root();
+  int Size() const;
+  bool Empty() const;
+  BinNodePosi<T> Root() const;
   BinNodePosi<T> InsertAsLC(const T &, BinNodePosi<T>);
   BinNodePosi<T> InsertAsRC(const T &, BinNodePosi<T>);
 
@@ -75,17 +75,19 @@ template <typename T> void MyBinTree<T>::updateHeightAbove(BinNodePosi<T> x) {
 /// @brief
 /// @tparam T
 /// @return 树的规模
-template <typename T> int MyBinTree<T>::Size() { return _size; }
+template <typename T> int MyBinTree<T>::Size() const { return _size; }
 
 /// @brief 树是否为空
 /// @tparam T
 /// @return
-template <typename T> bool MyBinTree<T>::Empty() { return !_root; }
+template <typename T> bool MyBinTree<T>::Empty() const { return !_root; }
 
 /// @brief
 /// @tparam T
 /// @return 返回树的根
-template <typename T> BinNodePosi<T> MyBinTree<T>::Root() { return _root; }
+template <typename T> BinNodePosi<T> MyBinTree<T>::Root() const {
+  return _root;
+}
 
 /// @brief 作为x的左孩子插入 要求x的左孩子为空 不做检查
 /// @tparam T

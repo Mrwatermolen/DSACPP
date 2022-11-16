@@ -17,7 +17,7 @@ protected:
   void shrink();
   Rank binSearchA(const T &e, Rank lo, Rank hi);
   Rank binSearchB(const T &e, Rank lo, Rank hi);
-  Rank binSearchC(const T &e, Rank lo, Rank hi);
+  Rank binSearchC(const T &e, Rank lo, Rank hi) const;
   Rank fibSearch(const T &e, Rank lo, Rank hi);
   void bubbleSort(Rank lo, Rank hi);
   void selectSort(Rank lo, Rank hi);
@@ -33,18 +33,18 @@ public:
   MyVector(const MyVector<T> &, Rank, Rank);
   ~MyVector();
 
-  T &operator[](Rank r);
+  T &operator[](Rank r) const;
   MyVector<T> &operator=(const MyVector<T> &v);
 
-  Rank Size();
-  bool Empty();
+  Rank Size() const;
+  bool Empty() const;
   Rank Insert(Rank r, const T &e);
   int Remove(Rank lo, Rank hi);
   T RemoveAt(Rank r);
-  Rank Find(const T &e, Rank lo, Rank hi);
+  Rank Find(const T &e, Rank lo, Rank hi) const;
 
-  template <typename VST> void Traverse(VST &visit);
-  Rank Search(const T &e, Rank lo, Rank hi);
+  template <typename VST> void Traverse(VST &visit) const;
+  Rank Search(const T &e, Rank lo, Rank hi) const;
   void Sort(Rank lo, Rank hi);
 };
 
@@ -162,7 +162,7 @@ Rank MyVector<T>::binSearchB(const T &e, Rank lo, Rank hi) {
 /// @param hi
 /// @return 返回不大于e的最后一个元素的秩
 template <typename T>
-Rank MyVector<T>::binSearchC(const T &e, Rank lo, Rank hi) {
+Rank MyVector<T>::binSearchC(const T &e, Rank lo, Rank hi) const {
   while (lo < hi) {
     Rank mi = ((hi - lo) >> 1) + lo;
     if (e < _elem[mi]) {
@@ -260,7 +260,9 @@ template <typename T> void MyVector<T>::quickSort(Rank lo, Rank hi) {
 //
 // 重载[] 不做越界检查
 //
-template <typename T> T &MyVector<T>::operator[](Rank r) { return _elem[r]; }
+template <typename T> T &MyVector<T>::operator[](Rank r) const {
+  return _elem[r];
+}
 
 //
 // 重载=
@@ -278,12 +280,12 @@ MyVector<T> &MyVector<T>::operator=(const MyVector<T> &v) {
   return *this;
 }
 
-template <typename T> Rank MyVector<T>::Size() { return _size; }
+template <typename T> Rank MyVector<T>::Size() const { return _size; }
 
 /// @brief 判断向量是否为空
 /// @tparam T
 /// @return 为空返回true
-template <typename T> bool MyVector<T>::Empty() { return _size == 0; }
+template <typename T> bool MyVector<T>::Empty() const { return _size == 0; }
 
 /// @brief 插入操作
 /// @tparam T
@@ -336,7 +338,8 @@ template <typename T> T MyVector<T>::RemoveAt(Rank r) {
 /// @param lo
 /// @param hi
 /// @return 返回元素e的秩
-template <typename T> Rank MyVector<T>::Find(const T &e, Rank lo, Rank hi) {
+template <typename T>
+Rank MyVector<T>::Find(const T &e, Rank lo, Rank hi) const {
   while ((lo < hi--) && (e != _elem[hi]))
     ;
   return hi;
@@ -347,7 +350,7 @@ template <typename T> Rank MyVector<T>::Find(const T &e, Rank lo, Rank hi) {
 /// @param visit 遍历器
 template <typename T>
 template <typename VST>
-void MyVector<T>::Traverse(VST &visit) {
+void MyVector<T>::Traverse(VST &visit) const {
   for (int i = 0; i < _size; i++) {
     visit(_elem[i]);
   }
@@ -359,7 +362,8 @@ void MyVector<T>::Traverse(VST &visit) {
 /// @param lo
 /// @param hi
 /// @return 返回不大于e的最后一个元素的秩
-template <typename T> Rank MyVector<T>::Search(const T &e, Rank lo, Rank hi) {
+template <typename T>
+Rank MyVector<T>::Search(const T &e, Rank lo, Rank hi) const {
   // fibSearch()
   return binSearchC(e, lo, hi);
 }

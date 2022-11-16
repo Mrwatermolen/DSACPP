@@ -44,6 +44,14 @@ template <typename T> struct MyBinNode {
 
   BinNodePosi<T> Zig();
   BinNodePosi<T> Zag();
+  inline bool IsLeaf() const;
+
+  bool operator<(const MyBinNode &e) const { return this->data < e.data; }
+  bool operator<=(const MyBinNode &e) const { return this->data <= e.data; }
+  bool operator>(const MyBinNode &e) const { return this->data > e.data; }
+  bool operator>=(const MyBinNode &e) const { return this->data >= e.data; }
+  bool operator!=(const MyBinNode &e) const { return this->data != e.data; }
+  bool operator==(const MyBinNode &e) const { return this->data != e.data; }
 };
 
 /// @brief
@@ -88,6 +96,10 @@ BinNodePosi<T> MyBinNode<T>::Succ() {
     x = x->lChild;
   }
   return succ;
+}
+
+template <typename T> inline bool MyBinNode<T>::IsLeaf() const {
+  return (!lChild && !rChild);
 }
 
 /// @brief 逆时针旋转节点 更新所有节点的树高 自动连接上层

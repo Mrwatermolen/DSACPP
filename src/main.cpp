@@ -16,6 +16,7 @@
 #include "MySplay.hpp"
 #include "MyStack.hpp"
 #include "test.h"
+#include "testMyHuffmanCoder.h"
 #include "testMyPQ.h"
 #include "testMyRedBlack.h"
 
@@ -263,7 +264,7 @@ void testMyBTree() {
 }
 
 int main() {
-  testMyVector();
+  // testMyVector();
   // testMyBitmap();
   // testMyList();
   // testMyStack();
@@ -273,5 +274,6 @@ int main() {
   // testMyBST();
   // testMyBTree();
   // testMyRedBlack();
-  testMyPQ();
+  // testMyPQ();
+  testMyHuffmanCoder();
 }

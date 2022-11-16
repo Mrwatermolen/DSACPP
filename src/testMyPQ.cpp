@@ -1,4 +1,5 @@
 #include "testMyPQ.h"
+#include "MyPriorityQueue.hpp"
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
@@ -11,7 +12,7 @@ void testMyPQ() {
     a.Insert(a.Size(), rand() % 20);
   }
   a.Traverse(f);
-  MyPQCompleteHeap<int> mpq(a);
+  MyPQCompleteHeap<int, MaxHeap<int>> mpq(a);
   std::cout << std::endl;
   mpq.Traverse(f);
   std::cout << "heap sort" << std::endl;
@@ -20,8 +21,8 @@ void testMyPQ() {
 }
 
 void heapSort(MyVector<int> &v) {
-  MyPQCompleteHeap<int> h(v);
-  for(int i = 0; i < v.Size(); i++) {
+  MyPQCompleteHeap<int, MinHeap<int>> h(v);
+  for (int i = 0; i < v.Size(); i++) {
     v[i] = h.DelMax();
   }
 }
